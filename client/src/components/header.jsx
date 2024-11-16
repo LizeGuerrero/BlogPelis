@@ -1,4 +1,4 @@
-//creo que aquí hay que importar una variable relacionada con "la forma de la página, "items" que se van a repetir
+import { Link } from 'react-router-dom'; // Importa Link para navegación
 
 const Header = () => {
   return (
@@ -52,15 +52,18 @@ const Header = () => {
 
       {/* Navigation */}
       <nav>
-        <a className="NavHome" href="/">
+        <Link className="NavHome" to="/">
           <button type="button" className="ButtonNavHome">Home</button>
-        </a>
-        <a className="NavAbout" href="/about">
+        </Link>
+        <Link className="NavGestorPeliculas" to="/gestorpeliculas">
+          <button type="button" className="ButtonNavGestorPeliculas">Gestor de Películas</button>
+        </Link>
+        <Link className="NavAbout" to="/about">
           <button type="button" className="ButtonNavAbout">About</button>
-        </a>
-        <a className="NavContact" href="/contact">
+        </Link>
+        <Link className="NavContact" to="/contact">
           <button type="button" className="ButtonNavContact">Contact</button>
-        </a>
+        </Link>
 
         {/* Search Form */}
         <form className="form-inline">

@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import {
@@ -7,9 +8,9 @@ import {
     deletePelicula,
 } from "../services/PeliculaService";
 import { getDirectores } from "../services/DirectorService";  // Importa el servicio de directores exactamente el get
-import "./app.css";
+import "../App.css";
 
-function App() {
+function GestorPeliculas() {
     const [peliculas, setPeliculas] = useState([]);
     const [directores, setDirectores] = useState([]); // Estado para los directores
     const [form, setForm] = useState({
@@ -175,4 +176,4 @@ function App() {
     );
 }
 
-export default App;
+export default GestorPeliculas;

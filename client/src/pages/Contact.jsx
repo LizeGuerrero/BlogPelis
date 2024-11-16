@@ -2,7 +2,7 @@
 function Contact() {
   return (
     <div>
-      <h1>Contáctanos</h1>
+      <h1>Contáctenos</h1>
       <p>Esta página contiene información para contactarnos.</p>
     </div>
   );

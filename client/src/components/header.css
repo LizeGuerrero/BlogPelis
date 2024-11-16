@@ -1,0 +1,114 @@
+/* Estilos globales para el Header */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Contenedor general del Header */
+  header {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background-color: #1c1c1c;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+  
+  /* Barra de redes sociales */
+  .container-socialMediaBar {
+    display: flex;
+    justify-content: center;
+    background-color: #333;
+    padding: 10px 0;
+  }
+  
+  .container-socialMediaBar a {
+    margin: 0 10px;
+    padding: 10px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    color: #fff;
+    text-decoration: none;
+  }
+  
+  .container-socialMediaBar a i {
+    font-size: 1.2rem;
+  }
+  
+  /* Colores específicos para las redes sociales */
+  #twitter { background-color: #000000; }
+  #telegram { background-color: #00c8ff; }
+  #facebook { background-color: #3b5998; }
+  #whatsapp { background-color: #01ff63; }
+  
+  /* Navegación principal */
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background-color: #222;
+  }
+  
+  nav a {
+    text-decoration: none;
+  }
+  
+  nav button {
+    background-color: #444;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  nav button:hover {
+    background-color: #888;
+  }
+  
+  /* Formulario de búsqueda */
+  form {
+    display: flex;
+    align-items: center;
+  }
+  
+  form .form-control {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #444;
+    background-color: #333;
+    color: white;
+  }
+  
+  form button {
+    margin-left: 10px;
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  form button:hover {
+    background-color: #218838;
+  }
+  
+  /* Logo y marca */
+  header .logo {
+    width: 80px;
+    height: auto;
+    margin-top: 10px;
+  }
+  
+  header .letras {
+    margin-top: 10px;
+    width: auto;
+    height: 30px;
+    margin-left: 10px;
+  }

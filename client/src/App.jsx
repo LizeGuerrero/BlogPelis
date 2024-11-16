@@ -3,7 +3,7 @@ import Home from "./pages/Home";
 import About from './pages/About';
 import Contact from './pages/Contact';
 import GestorPeliculas from './pages/GestorPeliculas';
-import Header from './components/Header'; // Asegúrate de importar Header aquí
+import Header from './components/header';
 
 function App() {
   return (

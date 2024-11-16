@@ -1,5 +1,5 @@
 // Crear la URL base de la API
-const API_URL = "http://localhost:5000/admin/peliculas"; // Asegúrate de que esta URL coincida con la de tu servidor Express
+const API_URL = "http://localhost:5000/admin/peliculas";// URL base para la API de peliculas
 
 // Función para obtener todas las películas
 export const getPeliculas = async () => {

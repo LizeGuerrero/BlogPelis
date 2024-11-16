@@ -50,7 +50,7 @@ const Header = () => {
         </a>
       </div>
 
-      {/* Navigation */}
+      {/* Navegación por botoncitos */}
       <nav>
         <Link className="NavHome" to="/">
           <button type="button" className="ButtonNavHome">Home</button>
@@ -77,7 +77,7 @@ const Header = () => {
           <button
             className="btn btn-outline-success my-2 my-sm-0"
             type="submit"
-            id="ButtontBuscarPeli"
+            id="ButtonBuscarPeli"
           >
             Search
           </button>

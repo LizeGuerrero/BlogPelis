@@ -8,7 +8,7 @@ import {
     deletePelicula,
 } from "../services/PeliculaService";
 import { getDirectores } from "../services/DirectorService";  // Importa el servicio de directores exactamente el get
-import "../App.css";
+import "./styles/GestorDePeliculas.css";
 
 function GestorPeliculas() {
     const [peliculas, setPeliculas] = useState([]);

@@ -139,7 +139,7 @@ html, body { Establecer el ancho y alto de la pagina
                 width: 100%; /* Ancho del body */
             }
 
-            #ButtontBuscarPeli{
+            #ButtonBuscarPeli{
                 grid-column: 4/6;
                 grid-row: 2/3;
                 height: 100%; /* Alto del body */
@@ -148,7 +148,7 @@ html, body { Establecer el ancho y alto de la pagina
                 color: white;
             }
 
-            #ButtontBuscarPeli:hover {
+            #ButtonBuscarPeli:hover {
                 background-color: #28a745;
                 color: white;
             }

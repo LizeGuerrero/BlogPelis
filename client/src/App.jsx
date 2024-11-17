@@ -8,7 +8,7 @@ import Header from './components/header';
 function App() {
   return (
     <Router>
-      <Header />  {/* Asegúrate de que Header está siendo renderizado aquí */}
+      <Header />  {/* Importamos el componente Header en app */}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />

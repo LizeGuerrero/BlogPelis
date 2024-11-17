@@ -6,11 +6,11 @@ export const getPeliculas = async () => {
   try {
     const response = await fetch(API_URL);
     if (!response.ok) {
-      throw new Error("Error al obtener las películas");
+      throw new Error("Error al obtener las películas");// suele ser porque no se cargó la BD
     }
     return await response.json();
   } catch (error) {
-    console.error("Error al obtener películas:", error); // Aquí puedes ver el error en la consola
+    console.error("Error al obtener películas:", error);
     throw error;
   }
 };
@@ -24,7 +24,7 @@ export const getPeliculaById = async (id) => {
     }
     return await response.json();
   } catch (error) {
-    console.error("Error al obtener la película:", error); // Aquí puedes ver el error en la consola
+    console.error("Error al obtener la película:", error);
     throw error;
   }
 };
@@ -66,38 +66,38 @@ export const updatePelicula = async (id, pelicula) => {
 };
 
 export const deletePelicula = async (id) => {
-    try {
-      const response = await fetch(`${API_URL}/${id}`, {
-        method: "DELETE",
-      });
-  
-      if (!response.ok) {
-        throw new Error("Error al eliminar la película");
-      }
-  
-      // Verificar si hay contenido en la respuesta antes de intentar convertirlo a JSON
-      if (response.status === 204) {
-        // Código 204 indica que la eliminación fue exitosa, pero no hay contenido
-        return; // No necesitas hacer `await response.json()` aquí
-      }
-  
-      // Si hay contenido, entonces procesar el JSON
-      return await response.json();
-    } catch (error) {
-      console.error("Error al eliminar la película:", error);
-      throw error;
+  try {
+    const response = await fetch(`${API_URL}/${id}`, {
+      method: "DELETE",
+    });
+
+    if (!response.ok) {
+      throw new Error("Error al eliminar la película");
     }
-  };
-  
+
+    // Verificar si hay contenido en la respuesta antes de intentar convertirlo a JSON
+    if (response.status === 204) {
+      // Código 204 indica que la eliminación fue exitosa, pero no hay contenido
+      return;
+    }
+
+    // Si hay contenido, entonces procesar el JSON
+    return await response.json();
+  } catch (error) {
+    console.error("Error al eliminar la película:", error);
+    throw error;
+  }
+};
+
 // services/PeliculaService.js
 import axios from 'axios';
 
 export const getDirectores = async () => {
-    try {
-        const response = await axios.get('/admin/directores'); // Ajusta la URL si es necesario
-        return response.data; // Asumimos que la respuesta es un array de directores
-    } catch (error) {
-        console.error('Error al obtener los directores:', error);
-        throw error; // Lanza el error si ocurre uno
-    }
+  try {
+    const response = await axios.get('/admin/directores');
+    return response.data;
+  } catch (error) {
+    console.error('Error al obtener los directores:', error);
+    throw error;
+  }
 };

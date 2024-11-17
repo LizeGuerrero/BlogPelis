@@ -1,15 +1,21 @@
 import Pelicula from '../../models/Pelicula.js';
-
+import Genero  from '../../models/Genero.js';
 // Obtener todas las películas
 const getPeliculas = async (req, res) => {
   try {
-    const peliculas = await Pelicula.find()
-      .populate("director_id", "nombre_director")  // Poblar solo el nombre del director
-      .populate("generos", "nombre_genero");  // Poblar géneros si lo deseas
-    res.json(peliculas);
+      const peliculas = await Pelicula.find()
+          .populate("director_id", "nombre_director")
+          .populate("generos", "nombre_genero"); // Poblamos los géneros con el nombre
+
+      const peliculasConFechaFormateada = peliculas.map((pelicula) => ({
+          ...pelicula.toObject(),
+          fecha_lanzamiento: pelicula.fecha_lanzamiento.toISOString().split("T")[0], // Convertir a YYYY-MM-DD
+      }));
+
+      res.json(peliculasConFechaFormateada);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Error al obtener las películas" });
+      console.error(error);
+      res.status(500).json({ message: "Error al obtener las películas" });
   }
 };
 
@@ -27,12 +33,25 @@ const getPeliculaById = async (req, res) => {
 // Agregar una nueva película
 const addPelicula = async (req, res) => {
   try {
-    const newPelicula = new Pelicula(req.body);
-    await newPelicula.save();
-    res.status(201).json(newPelicula);
+      console.log("Datos recibidos:", req.body); // Verifica los datos enviados
+      const generos = await Genero.find({
+          _id: { $in: req.body.generos }
+      });
+
+      console.log("Géneros encontrados:", generos); // Verifica los géneros encontrados
+
+      const peliculaData = {
+          ...req.body,
+          generos: generos.map(g => g._id),
+          fecha_lanzamiento: new Date(req.body.fecha_lanzamiento),
+      };
+
+      const newPelicula = new Pelicula(peliculaData);
+      await newPelicula.save();
+      res.status(201).json(newPelicula);
   } catch (error) {
-    console.error("Error al agregar la película:", error.message); // Agrega el detalle del error
-    res.status(500).json({ error: "Error al agregar la película", details: error.message });
+      console.error("Error al agregar la película:", error.message);
+      res.status(500).json({ error: "Error al agregar la película", details: error.message });
   }
 };
 

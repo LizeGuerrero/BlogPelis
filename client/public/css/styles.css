@@ -1,4 +1,6 @@
 
+
+
 * { /*Estandarizar todo para que no hayan bordes ni espacios desconocidos raros.*/
     box-sizing: border-box; /*Sin bordes ni espacios.*/
     /*align-items: center; Centrar verticalmente*/

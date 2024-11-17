@@ -24,11 +24,22 @@ const getGeneroById = async (req, res) => {
 // Agregar un nuevo género
 const addGenero = async (req, res) => {
     try {
+        const { nombre_genero } = req.body;
+
+        // Verifica si el género ya existe
+        const generoExistente = await Genero.findOne({ nombre_genero });
+        if (generoExistente) {
+            // Si el género ya existe, devuelve un mensaje de error
+            return res.status(400).json({ mensaje: "El género ya existe" });
+        }
+
+        // Si no existe, crea un nuevo género
         const newGenero = new Genero(req.body);
         await newGenero.save();
         res.status(201).json(newGenero);
     } catch (error) {
-        res.status(500).json({ mensaje: "Error al agregar el género" });
+        console.error("Error al agregar el género:", error);
+        res.status(500).json({ mensaje: "Error al agregar el género", details: error.message });
     }
 };
 

@@ -39,10 +39,10 @@ const Home = () => {
                 <strong>Fecha de Lanzamiento:</strong>{" "}
                 {new Date(pelicula.fecha_lanzamiento).toLocaleDateString()}
               </p>
-              {/* Si hay imagen, mostrarla */}
+              {/* Si hay imagen, mostrarla, esto más tarde va a cambiar eeee */}
               {pelicula.imagenes?.length > 0 && (
                 <img
-                  src={pelicula.imagenes[0].url} // Ajusta si la estructura del campo imagen es diferente
+                  src={pelicula.imagenes[0].url} // Ajusta si la estructura del campo imagen es diferente porque todavía no hay imagen xd
                   alt={`${pelicula.titulo} portada`}
                   className="pelicula-imagen"
                 />

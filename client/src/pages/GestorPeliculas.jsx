@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import {
@@ -7,24 +6,28 @@ import {
     updatePelicula,
     deletePelicula,
 } from "../services/PeliculaService";
-import { getDirectores } from "../services/DirectorService";  // Importa el servicio de directores exactamente el get
+import { getDirectores } from "../services/DirectorService"; // Importa el servicio de directores exactamente el get
+import { getGeneros } from "../services/GeneroService";
 import "./styles/GestorDePeliculas.css";
 
 function GestorPeliculas() {
     const [peliculas, setPeliculas] = useState([]);
     const [directores, setDirectores] = useState([]); // Estado para los directores
+    const [generos, setGeneros] = useState([]); // Estado para los géneros
     const [form, setForm] = useState({
         titulo: "",
         duracion: "",
         sinopsis: "",
         director_id: "",
         fecha_lanzamiento: "",
+        generos: [], // Inicializa los géneros
     });
     const [editingId, setEditingId] = useState(null);
 
     useEffect(() => {
         loadPeliculas();
         loadDirectores(); // Cargar los directores
+        loadGeneros(); // Función para cargar los géneros
     }, []);
 
     const loadPeliculas = async () => {
@@ -35,8 +38,12 @@ function GestorPeliculas() {
     const loadDirectores = async () => {
         const data = await getDirectores();
         setDirectores(data);
-      };
-    
+    };
+
+    const loadGeneros = async () => {
+        const data = await getGeneros(); // Función para obtener los géneros del backend
+        setGeneros(data);
+    };
 
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
@@ -44,33 +51,75 @@ function GestorPeliculas() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (editingId) {
-            await updatePelicula(editingId, form);
+
+        // Validación de datos
+        if (!form.director_id || form.generos.length === 0) {
             Swal.fire(
-                "Actualizado",
-                "Película actualizada con éxito",
-                "success"
+                "Error",
+                "Por favor, selecciona un director y al menos un género.",
+                "error"
             );
-            setEditingId(null);
-        } else {
-            await addPelicula(form);
-            Swal.fire("Agregado", "Película agregada con éxito", "success");
+            return;
         }
+
+        try {
+            if (editingId) {
+                await updatePelicula(editingId, form);
+                Swal.fire(
+                    "Actualizado",
+                    "Película actualizada con éxito",
+                    "success"
+                );
+                setEditingId(null);
+            } else {
+                const response = await addPelicula(form);
+                console.log(response); // Agrega esto para ver la respuesta del backend
+                Swal.fire("Agregado", "Película agregada con éxito", "success");
+            }
+        } catch (error) {
+            console.error("Error al agregar la película:", error);
+            Swal.fire(
+                "Error",
+                "Hubo un error al agregar la película.",
+                "error"
+            );
+        }
+
+        // Limpiar el formulario
         setForm({
             titulo: "",
             duracion: "",
             sinopsis: "",
             director_id: "",
-
+            generos: [],
             fecha_lanzamiento: "",
         });
+
         loadPeliculas();
     };
 
     const handleEdit = (pelicula) => {
-        setForm(pelicula);
+        setForm({
+            ...pelicula,
+            director_id: pelicula.director_id._id,
+            generos: pelicula.generos.map((genero) => genero._id), // Guardamos los IDs de los géneros seleccionados
+            fecha_lanzamiento: pelicula.fecha_lanzamiento
+                ? pelicula.fecha_lanzamiento.split("T")[0]
+                : "",
+        });
         setEditingId(pelicula._id);
         Swal.fire("Modo de edición", `Editando: ${pelicula.titulo}`, "info");
+    };
+
+    const handleGenerosChange = (e) => {
+        const { value, checked } = e.target;
+
+        setForm((prevState) => {
+            const updatedGeneros = checked
+                ? [...prevState.generos, value] // Si el checkbox está marcado, agregamos el género
+                : prevState.generos.filter((generoId) => generoId !== value); // Si no está marcado, lo eliminamos
+            return { ...prevState, generos: updatedGeneros };
+        });
     };
 
     const handleDelete = async (id) => {
@@ -116,18 +165,37 @@ function GestorPeliculas() {
                 />
 
                 {/* Dropdown para seleccionar el director */}
-        <select
-          name="director_id"
-          value={form.director_id}
-          onChange={handleChange}
-        >
-          <option value="">Selecciona un director</option>
-          {directores.map((director) => (
-            <option key={director._id} value={director._id}>
-              {director.nombre_director}
-            </option>
-          ))}
-        </select>
+                <select
+                    name="director_id"
+                    value={form.director_id}
+                    onChange={handleChange}
+                >
+                    <option value="">Selecciona un director</option>
+                    {directores.map((director) => (
+                        <option key={director._id} value={director._id}>
+                            {director.nombre_director}
+                        </option>
+                    ))}
+                </select>
+                <div>
+                    <label>Selecciona los géneros:</label>
+                    <div className="checkbox-group">
+                        {generos.map((genero) => (
+                            <div key={genero._id} className="checkbox-item">
+                                <input
+                                    type="checkbox"
+                                    id={genero._id}
+                                    value={genero._id}
+                                    checked={form.generos.includes(genero._id)}
+                                    onChange={handleGenerosChange}
+                                />
+                                <label htmlFor={genero._id}>
+                                    {genero.nombre_genero}
+                                </label>
+                            </div>
+                        ))}
+                    </div>
+                </div>
 
                 <input
                     type="date"
@@ -146,32 +214,41 @@ function GestorPeliculas() {
                 </button>
             </form>
 
-            <div className="items">
-                {peliculas.map((pelicula) => (
-                    <div key={pelicula._id} className="item">
-                        <span>
-                            <strong>{pelicula.titulo}</strong> -{" "}
-                            {pelicula.sinopsis} (
-                                {new Date(pelicula.fecha_lanzamiento).toLocaleDateString()})
-                                Director: {pelicula.director_id.nombre_director} {/* Mostrar el nombre del director */}
-                        </span>
-                        <div className="item-buttons">
-                            <button
-                                className="edit-btn"
-                                onClick={() => handleEdit(pelicula)}
-                            >
-                                Editar
-                            </button>
-                            <button
-                                className="delete-btn"
-                                onClick={() => handleDelete(pelicula._id)}
-                            >
-                                Eliminar
-                            </button>
-                        </div>
-                    </div>
-                ))}
-            </div>
+            <div className="seccionPelicula">
+  {peliculas.map((pelicula) => (
+    <article key={pelicula._id} className="peliculaCard">
+      <header className="pelicula-header">
+        <h2>{pelicula.titulo}</h2>
+        <p className="pelicula-fecha">
+          {new Date(pelicula.fecha_lanzamiento).toLocaleDateString("es-ES", {
+            timeZone: "UTC",
+          })}
+        </p>
+      </header>
+
+      <section className="pelicula-sinopsis">
+        <p>{pelicula.sinopsis}</p>
+      </section>
+
+      <section className="pelicula-director">
+        <p><strong>Director: </strong>{pelicula.director_id.nombre_director}</p>
+      </section>
+
+      <section className="pelicula-generos">
+        <p><strong>Géneros: </strong>{pelicula.generos.map((genero) => genero.nombre_genero).join(", ")}</p>
+      </section>
+
+      <footer className="pelicula-actions">
+        <button className="edit-btn" onClick={() => handleEdit(pelicula)}>
+          Editar
+        </button>
+        <button className="delete-btn" onClick={() => handleDelete(pelicula._id)}>
+          Eliminar
+        </button>
+      </footer>
+    </article>
+  ))}
+</div>
         </div>
     );
 }

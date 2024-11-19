@@ -1,101 +1,45 @@
-import { Link } from 'react-router-dom'; // Importa Link para navegación
+import { Link } from 'react-router-dom';
+import './header.css';
+import hamster from '../assets/logo-Hamster.png';
 
 const Header = () => {
   return (
-    <header className="header" id="header">
-      {/* Social Media Bar */}
-      <div className="container-socialMediaBar" id="socialMediaBar">
-        {/* Twitter */}
-        <a
-          className="btn btn-primary"
-          style={{ backgroundColor: '#000000' }}
-          href="#!"
-          role="button"
-          id="twitter"
-        >
-          <i className="bi bi-twitter-x">X</i>
-        </a>
+    <header className="main-header">
+      <div className="container-header">
+        {/* Logo */}
+        <Link to="/" className="logo">
+          <img src={hamster} alt="Hamster Piensa" className="hamster-icon" />
+          <span className="site-name">Hamster Piensa</span>
+        </Link>
 
-        {/* Telegram */}
-        <a
-          className="btn btn-primary"
-          style={{ backgroundColor: '#00c8ff' }}
-          href="#!"
-          role="button"
-          id="telegram"
-        >
-          <i className="bi bi-telegram" style={{ color: '#000000' }}>Telegram</i>
-        </a>
+        {/* Toggle para menú responsive */}
+        <input type="checkbox" id="menu-toggle" className="menu-toggle" />
+<label htmlFor="menu-toggle" className="menu-icon">
+  ☰ {/* Carácter Unicode para un ícono tipo "hamburguesa" */}
+</label>
 
-        {/* Facebook */}
-        <a
-          className="btn btn-primary"
-          style={{ backgroundColor: '#3b5998' }}
-          href="#!"
-          role="button"
-          id="facebook"
-        >
-          <i className="fab fa-facebook-f">Facebook</i>
-        </a>
-
-        {/* Whatsapp */}
-        <a
-          className="btn btn-primary"
-          style={{ backgroundColor: '#01ff63' }}
-          href="#!"
-          role="button"
-          id="whatsapp"
-        >
-          <i className="bi bi-whatsapp" style={{ color: '#000000' }}>Whatsapp</i>
-        </a>
+        {/* Menú de navegación */}
+        <nav className="main-navbar">
+          <ul className="nav-list">
+            <li>
+              <Link to="/gestorpeliculas">Películas</Link>
+              <ul className="dropdown">
+                <li><Link to="/gestorpeliculas?category=accion">Acción</Link></li>
+                <li><Link to="/gestorpeliculas?category=comedia">Comedia</Link></li>
+                <li><Link to="/gestorpeliculas?category=drama">Drama</Link></li>
+              </ul>
+            </li>
+            <li><Link to="/reviews">Reseñas</Link></li>
+            <li><Link to="/contact">Contáctanos</Link></li>
+            <li><Link to="/about">Sobre Nosotros</Link></li>
+            <li>
+              <button className="login-btn" onClick={() => window.location.href = "/gestorpeliculas"}>
+                <img src="/path/to/hamster-login-icon.svg" alt="Login" className="login-icon" />
+              </button>
+            </li>
+          </ul>
+        </nav>
       </div>
-
-      {/* Navegación por botoncitos */}
-      <nav>
-        <Link className="NavHome" to="/">
-          <button type="button" className="ButtonNavHome">Home</button>
-        </Link>
-        <Link className="NavGestorPeliculas" to="/gestorpeliculas">
-          <button type="button" className="ButtonNavGestorPeliculas">Gestor de Películas</button>
-        </Link>
-        <Link className="NavAbout" to="/about">
-          <button type="button" className="ButtonNavAbout">About</button>
-        </Link>
-        <Link className="NavContact" to="/contact">
-          <button type="button" className="ButtonNavContact">Contact</button>
-        </Link>
-
-        {/* Search Form */}
-        <form className="form-inline">
-          <input
-            className="form-control mr-sm-2"
-            type="search"
-            placeholder="Search"
-            aria-label="Search"
-            id="inputBuscarPeli"
-          />
-          <button
-            className="btn btn-outline-success my-2 my-sm-0"
-            type="submit"
-            id="ButtonBuscarPeli"
-          >
-            Search
-          </button>
-        </form>
-      </nav>
-
-      {/* Logo and Brand */}
-      <img
-        src="https://i.postimg.cc/FRnxdJ15/LogoFav.jpg"
-        className="logo"
-        width="80px"
-        alt="Logo"
-      />
-      <img
-        src="https://i.postimg.cc/DZqXFJsP/letrassinfondo.png"
-        className="letras"
-        alt="Brand Name"
-      />
     </header>
   );
 };

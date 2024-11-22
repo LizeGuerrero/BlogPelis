@@ -55,7 +55,7 @@
 .main-navbar {
   display: flex;
   align-items: center;
-  justify-content: flex-start; /* Para alinear los items a la izquierda */
+  justify-content: flex-start;
 }
 
 .nav-list {
@@ -126,14 +126,30 @@
 
 /* Botón de Login */
 .login-btn {
-  background: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #4caf50;
+  color: white;
   border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  font-size: 1.5rem;
   cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-.login-icon {
-  height: 30px;
-  width: 30px;
+.login-btn:hover {
+  background-color: #45a049;
+}
+
+.login-btn:active {
+  transform: scale(0.95);
+}
+
+.login-btn:focus {
+  outline: 2px solid #4caf50;
+  outline-offset: 2px;
 }
 
 /* Estilos Responsive */
@@ -147,7 +163,7 @@
     top: 80px;
     left: -100%;
     background-color: #1a1a1a;
-    width: 20%; /* Ajustamos el ancho del menú al 30% */
+    width: 20%; /* Ajustamos el ancho del menú */
     height: 100vh;
     flex-direction: column;
     justify-content: flex-start;

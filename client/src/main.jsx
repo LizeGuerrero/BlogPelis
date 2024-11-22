@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App'; // Asegúrate de que App esté correctamente importado
-import './index.css'; // Si tienes estilos globales, de lo contrario, puedes omitir esta línea
+import App from './App';
+import './index.css'; // Estilo global***
 
 // Crear la raíz de la aplicación
 const root = ReactDOM.createRoot(document.getElementById('root'));

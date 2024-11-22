@@ -10,11 +10,29 @@ import { getDirectores } from "../services/DirectorService"; // Importa el servi
 import { getGeneros } from "../services/GeneroService";
 import "./styles/GestorDePeliculas.css";
 
+/**
+ * Componente que gestiona la creación, edición y eliminación de películas.
+ * El componente utiliza el hook useState para mantener el estado de las películas,
+ * directores y géneros. Utiliza el hook useEffect para cargar las películas,
+ * directores y géneros al montar el componente. El componente renderiza un formulario
+ * para agregar o editar una película, y una lista de películas con sus detalles.
+ * El componente también utiliza el servicio getPeliculas para obtener las películas,
+ * addPelicula para agregar una nueva película, updatePelicula para editar una
+ * película existente y deletePelicula para eliminar una película.
+ */
 function GestorPeliculas() {
-    const [peliculas, setPeliculas] = useState([]);
+    const [peliculas, setPeliculas] = useState([]); //Esto es como tener una cajita vacía llamada peliculas, donde guardaremos las películas. También tenemos (setPeliculas) que nos permite poner cosas nuevas dentro de esa cajita.
     const [directores, setDirectores] = useState([]); // Estado para los directores
     const [generos, setGeneros] = useState([]); // Estado para los géneros
     const [form, setForm] = useState({
+/*Aquí creamos un formulario (como una hoja donde escribimos cosas). Este formulario tiene espacios vacíos para:
+titulo: el nombre de la película.
+duracion: cuánto dura la película.
+sinopsis: una pequeña historia de qué trata.
+director_id: quién la dirigió (por ahora no lo sabemos, así que está vacío).
+fecha_lanzamiento: el día en que salió la película.
+generos: qué tipo de película es (puede tener más de uno).
+Y tenemos un botón (setForm) para cambiar lo que está escrito en este formulario.*/
         titulo: "",
         duracion: "",
         sinopsis: "",
@@ -22,9 +40,10 @@ function GestorPeliculas() {
         fecha_lanzamiento: "",
         generos: [], // Inicializa los géneros
     });
-    const [editingId, setEditingId] = useState(null);
+    const [editingId, setEditingId] = useState(null); //Esto es como tener una nota adhesiva para recordar qué película queremos editar. Si no estamos editando nada, se queda vacía (null).
 
     useEffect(() => {
+        // Cargar las películas al montar el componente
         loadPeliculas();
         loadDirectores(); // Cargar los directores
         loadGeneros(); // Función para cargar los géneros
@@ -34,6 +53,19 @@ function GestorPeliculas() {
         const data = await getPeliculas();
         setPeliculas(data);
     };
+    /**
+     * Carga la lista de películas desde el servidor.
+     *
+     * - Esta función es asíncrona y utiliza `getPeliculas()` para obtener los datos de las películas.
+     * - Una vez que los datos han sido recuperados, se almacenan en el estado local `peliculas`
+     *   utilizando `setPeliculas(data)`.
+     *
+     * Pasos:
+     * 1. Espera (con `await`) a que la función `getPeliculas()` devuelva la lista de películas.
+     * 2. Actualiza el estado `peliculas` con los datos obtenidos.
+     *
+     * Esto asegura que la lista de películas esté sincronizada con el servidor para su uso en la interfaz.
+     */
 
     const loadDirectores = async () => {
         const data = await getDirectores();
@@ -50,6 +82,12 @@ function GestorPeliculas() {
     };
 
     const handleSubmit = async (e) => {
+        /**
+         * Maneja el envío del formulario para agregar o actualizar una película.
+         * - Valida que los campos obligatorios estén completos.
+         * - Decide entre agregar una nueva película o actualizar una existente.
+         * - Limpia el formulario y recarga la lista de películas.
+         */
         e.preventDefault();
 
         // Validación de datos
@@ -99,6 +137,7 @@ function GestorPeliculas() {
     };
 
     const handleEdit = (pelicula) => {
+        /*Actualiza el estado del formulario cuando un input cambia.*/
         setForm({
             ...pelicula,
             director_id: pelicula.director_id._id,
@@ -215,40 +254,56 @@ function GestorPeliculas() {
             </form>
 
             <div className="seccionPelicula">
-  {peliculas.map((pelicula) => (
-    <article key={pelicula._id} className="peliculaCard">
-      <header className="pelicula-header">
-        <h2>{pelicula.titulo}</h2>
-        <p className="pelicula-fecha">
-          {new Date(pelicula.fecha_lanzamiento).toLocaleDateString("es-ES", {
-            timeZone: "UTC",
-          })}
-        </p>
-      </header>
+                {peliculas.map((pelicula) => (
+                    <article key={pelicula._id} className="peliculaCard">
+                        <header className="pelicula-header">
+                            <h2>{pelicula.titulo}</h2>
+                            <p className="pelicula-fecha">
+                                {new Date(
+                                    pelicula.fecha_lanzamiento
+                                ).toLocaleDateString("es-ES", {
+                                    timeZone: "UTC",
+                                })}
+                            </p>
+                        </header>
 
-      <section className="pelicula-sinopsis">
-        <p>{pelicula.sinopsis}</p>
-      </section>
+                        <section className="pelicula-sinopsis">
+                            <p>{pelicula.sinopsis}</p>
+                        </section>
 
-      <section className="pelicula-director">
-        <p><strong>Director: </strong>{pelicula.director_id.nombre_director}</p>
-      </section>
+                        <section className="pelicula-director">
+                            <p>
+                                <strong>Director: </strong>
+                                {pelicula.director_id.nombre_director}
+                            </p>
+                        </section>
 
-      <section className="pelicula-generos">
-        <p><strong>Géneros: </strong>{pelicula.generos.map((genero) => genero.nombre_genero).join(", ")}</p>
-      </section>
+                        <section className="pelicula-generos">
+                            <p>
+                                <strong>Géneros: </strong>
+                                {pelicula.generos
+                                    .map((genero) => genero.nombre_genero)
+                                    .join(", ")}
+                            </p>
+                        </section>
 
-      <footer className="pelicula-actions">
-        <button className="edit-btn" onClick={() => handleEdit(pelicula)}>
-          Editar
-        </button>
-        <button className="delete-btn" onClick={() => handleDelete(pelicula._id)}>
-          Eliminar
-        </button>
-      </footer>
-    </article>
-  ))}
-</div>
+                        <footer className="pelicula-actions">
+                            <button
+                                className="edit-btn"
+                                onClick={() => handleEdit(pelicula)}
+                            >
+                                Editar
+                            </button>
+                            <button
+                                className="delete-btn"
+                                onClick={() => handleDelete(pelicula._id)}
+                            >
+                                Eliminar
+                            </button>
+                        </footer>
+                    </article>
+                ))}
+            </div>
         </div>
     );
 }

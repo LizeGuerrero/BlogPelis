@@ -21,7 +21,7 @@ const Home = () => {
 
   return (
     <div className="home-container">
-      <h1>Películas Disponibles</h1>
+      <h1>Sobre Películas</h1>
       <div className="peliculas-grid">
         {peliculas.length === 0 ? (
           <p>No hay películas disponibles en este momento.</p>

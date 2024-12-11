@@ -1,5 +1,5 @@
 // Crear la URL base de la API
-const API_URL = "http://localhost:5000/admin/peliculas";// URL base para la API de peliculas
+const API_URL = import.meta.env.VITE_API_URL + "/admin/peliculas"; // Usamos la variable de entorno para la URL base de la API de películas
 
 // Función para obtener todas las películas
 export const getPeliculas = async () => {

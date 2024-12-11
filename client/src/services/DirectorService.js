@@ -1,4 +1,5 @@
-const API_URL = "http://localhost:5000/admin/directores"; // URL base para la API de directores
+// Crear la URL base de la API
+const API_URL = import.meta.env.VITE_API_URL + "/admin/directores"; // URL base para la API de directores
 
 // Función para obtener todos los directores
 export const getDirectores = async () => {

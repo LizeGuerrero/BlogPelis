@@ -1,5 +1,5 @@
 // URL base de la API de autenticación
-const API_URL = "http://localhost:5000/users";  // Asegúrate de que esta URL sea correcta
+const API_URL = import.meta.env.VITE_API_URL + "/users";
 
 import axios from 'axios';
 

@@ -22,7 +22,17 @@ app.use(express.json()); // Análisis de solicitudes JSON
 app.use(cors());         // Habilitar CORS
 app.use(morgan('dev'));  // Logging de solicitudes HTTP
 
-
+app.get('/', (req, res) => {
+  res.json({
+    message: 'Bienvenido a la API de BlogPelis',
+    rutasDisponibles: [
+      '/',
+      '/admin',
+      '/users',
+      '/api/...'
+    ],
+  });
+});
 
 
 

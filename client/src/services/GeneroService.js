@@ -1,4 +1,5 @@
-const API_URL = "http://localhost:5000/admin/generos"; // URL base para la API de géneros
+// Crear la URL base de la API
+const API_URL = import.meta.env.VITE_API_URL + "/admin/generos"; // URL base para la API de géneros
 
 // Función para obtener todos los géneros
 export const getGeneros = async () => {
